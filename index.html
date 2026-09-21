@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🧩</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Grid — Mini Crosswords</title>
+<style>
+body { font-family:'Segoe UI',sans-serif; background:linear-gradient(135deg,#fdfbfb,#ebedee); margin:0; padding:0; }
+header { background:linear-gradient(90deg,#6a11cb,#2575fc); color:#fff; padding:24px 16px; text-align:center; }
+header h1 { font-size:28px; margin:0; }
+header p { margin-top:6px; opacity:0.9; }
+.theme-banner { background:#fff3cd; color:#7a5200; text-align:center; padding:10px; font-size:14px; font-weight:600; border-bottom:1px solid #ffe69c; }
+.container { max-width:900px; margin:24px auto; padding:0 16px; }
+.date-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; }
+.date-card { background:#fff; border-radius:8px; padding:8px; box-shadow:0 2px 6px rgba(0,0,0,0.06); cursor:pointer; transition:transform .2s, box-shadow .2s; }
+.date-card:hover { transform:translateY(-4px); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
+.date-card h3 { margin:0 0 4px; color:#2575fc; font-size:14px; }
+.date-card span { font-size:11px; color:#666; }
+.theme-card { border:2px solid #ff9800; background:linear-gradient(135deg,#fff8e7,#fff3cd); position:relative; }
+.theme-card .theme-badge { position:absolute; top:-10px; right:-10px; background:#ff9800; color:#fff; font-size:10px; font-weight:700; padding:4px 8px; border-radius:999px; }
+.theme-card .theme-name { display:block; margin-top:6px; font-size:11px; font-weight:600; color:#ff6f00; }
+.puzzle-view { margin-top:32px; background:#fff; border-radius:12px; padding:16px; box-shadow:0 6px 16px rgba(0,0,0,0.08); display:none; }
+.puzzle-view h2 { color:#333; font-size:18px; font-weight:600; }
+footer { text-align:center; font-size:13px; color:#777; margin:32px 0 16px; }
+#seeMoreLink { font-size:14px; color:#2575fc; text-decoration:none; font-weight:600; }
+#seeMoreLink:hover { text-decoration:underline; }
+.whatsapp-join { display:inline-block; margin-top:16px; padding:10px 16px; background:#25D366; color:#fff; font-weight:600; border-radius:6px; text-decoration:none; font-size:14px; }
+.whatsapp-join:hover { background:#1ebe5d; }
+.whatsapp-share { display:inline-block; margin-top:12px; font-size:14px; color:#25D366; font-weight:600; text-decoration:none; }
+.whatsapp-share:hover { text-decoration:underline; }
+@media(max-width:600px) {
+  .date-list { grid-template-columns:repeat(2,1fr); gap:12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>The Daily Grid</h1>
+  <p>Mini Crosswords • One puzzle a day • Built with love</p>
+</header>
+
+<div class="theme-banner">🎉 Every Sunday features a special themed crossword!</div>
+
+<div class="container">
+
+  <!-- ============================================================
+       DATE CARDS — newest first. To add a new puzzle, add a card
+       at the TOP of this list. See README-HOW-TO-ADD-A-PUZZLE.md.
+       ============================================================ -->
+  <div class="date-list" id="dateList">
+
+    <div class="date-card" onclick="openPuzzle('2026-09-08')">
+      <h3>8 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+    <div class="date-card" onclick="openPuzzle('2026-09-07')">
+      <h3>7 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+    <div class="date-card theme-card" onclick="openPuzzle('2026-09-06')">
+      <div class="theme-badge">SUNDAY THEME</div>
+      <h3>6 Sept 2026</h3>
+      <span>Mini Crossword</span>
+      <span class="theme-name">Word Squares</span>
+    </div>
+
+    <div class="date-card" onclick="openPuzzle('2026-09-05')">
+      <h3>5 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+    <div class="date-card" onclick="openPuzzle('2026-09-04')">
+      <h3>4 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+    <div class="date-card" onclick="openPuzzle('2026-09-03')">
+      <h3>3 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+    <div class="date-card" onclick="openPuzzle('2026-09-02')">
+      <h3>2 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+    <div class="date-card" onclick="openPuzzle('2026-09-01')">
+      <h3>1 Sept 2026</h3>
+      <span>Mini Crossword</span>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; margin-top:20px;">
+    <a href="#" id="seeMoreLink" onclick="seeMore(event)">See older grids ↓</a>
+  </div>
+
+  <!-- ============================================================
+       PUZZLE VIEW — the Exolve player renders inside #exolve.
+       ============================================================ -->
+  <div class="puzzle-view" id="puzzleView">
+    <h2 id="puzzleDate"></h2>
+    <div id="exolve"></div>
+  </div>
+
+</div>
+
+<footer>
+  <p>New crossword added daily • Share with friends 🧩</p>
+  <a class="whatsapp-join" href="https://chat.whatsapp.com/LpAg39aAgIZDNySSq2qeaj" target="_blank">Join our WhatsApp Crossword Community 🧩</a>
+  <br>
+  <a class="whatsapp-share" href="https://wa.me/?text=I%E2%80%99m%20playing%20today%E2%80%99s%20mini%20crossword%20on%20The%20Daily%20Grid!%20Try%20it%20here:%20thedailygrid.github.io/thedailygrid/">Share today's crossword on WhatsApp →</a>
+</footer>
+
+<!-- Exolve player library (local copy) -->
+<script src="exolve-m.js"></script>
+<!-- Puzzle data: const PUZZLES = { "YYYY-MM-DD": {...}, ... } -->
+<script src="puzzles.js"></script>
+
+<script>
+/* ---- Human-friendly date label from a "YYYY-MM-DD" key ---- */
+function dateLabel(dateKey) {
+  var parts = dateKey.split('-');
+  var months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+  var y = parts[0], m = parseInt(parts[1],10), d = parseInt(parts[2],10);
+  return d + ' ' + months[m-1] + ' ' + y;
+}
+
+/* ---- Open a puzzle: render the Exolve player in-page ---- */
+function openPuzzle(dateKey) {
+  var p = PUZZLES[dateKey];
+  if (!p) { return; }
+
+  var heading = dateLabel(dateKey);
+  if (p.theme) {
+    heading = heading + ' • Sunday Theme: ' + p.theme;
+  }
+  document.getElementById('puzzleDate').textContent = heading;
+
+  // Clear any previously-rendered puzzle, then render the new one.
+  var host = document.getElementById('exolve');
+  host.innerHTML = '';
+  createExolve(p.exolve, 'exolve');
+
+  document.getElementById('puzzleView').style.display = 'block';
+}
+
+/* ---- "See older grids" progressive reveal ---- */
+var VISIBLE_COUNT = 6;
+var shown = VISIBLE_COUNT;
+
+function applyVisibility() {
+  var cards = document.querySelectorAll('#dateList .date-card');
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].style.display = (i < shown) ? '' : 'none';
+  }
+  var link = document.getElementById('seeMoreLink');
+  link.style.display = (shown >= cards.length) ? 'none' : '';
+}
+
+function seeMore(e) {
+  if (e) { e.preventDefault(); }
+  shown += VISIBLE_COUNT;
+  applyVisibility();
+}
+
+/* ---- On load: reveal first 6, auto-open the latest puzzle ---- */
+document.addEventListener('DOMContentLoaded', function () {
+  applyVisibility();
+  var firstCard = document.querySelector('#dateList .date-card');
+  if (firstCard) {
+    var m = firstCard.getAttribute('onclick').match(/openPuzzle\('([^']+)'\)/);
+    if (m) { openPuzzle(m[1]); }
+  }
+});
+</script>
+
+</body>
+</html>
